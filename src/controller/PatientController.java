@@ -2,20 +2,24 @@ package controller;
 
 import model.Patient;
 import util.CSVReader;
+import util.CSVWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PatientController {
 
-    public List<Patient> loadPatients() {
-        List<Patient> patients = new ArrayList<>();
+    private static final String FILE = "data/patients.csv";
 
-        for (String[] row : CSVReader.read("data/patients.csv")) {
-            patients.add(new Patient(
-                    row[0], row[1], row[2], row[3]
-            ));
+    public List<Patient> loadPatients() {
+        List<Patient> list = new ArrayList<>();
+        for (String[] r : CSVReader.read(FILE)) {
+            list.add(new Patient(r[0], r[1], r[2], r[3]));
         }
-        return patients;
+        return list;
+    }
+
+    public void addPatient(Patient p) {
+        CSVWriter.append(FILE, p.toString());
     }
 }
